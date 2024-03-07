@@ -43,16 +43,35 @@ from collections import defaultdict
 from itertools import combinations
 # Function to generate candidate k-item sequences
 def generate_candidates(dataset, k):
+    candidate_count = defaultdict(int)
 
+    for sequence in dataset:
+        for itemset in combinations(sequence, k):
+            candidate_count[itemset] += 1
 
-    /WRITE YOUR CODE HERE/
+    return candidate_count
 
-
-#Function to perform GSP algorithm
+# Function to perform GSP algorithm
 def gsp(dataset, min_support):
+    # Step 1: Initialize the frequent patterns dictionary
+    frequent_patterns = defaultdict(int)
 
+    # Step 2: Generate frequent 1-item sequences
+    k = 1
+    candidate_count = generate_candidates(dataset, k)
 
-  /WRITE YOUR CODE HERE/
+    # Step 3: Prune and update frequent patterns
+    frequent_patterns.update({itemset: count for itemset, count in candidate_count.items() if count >= min_support})
+
+    # Step 4: Generate frequent k-item sequences until no more can be generated
+    while candidate_count:
+        k += 1
+        candidate_count = generate_candidates(dataset, k)
+
+        # Prune and update frequent patterns
+        frequent_patterns.update({itemset: count for itemset, count in candidate_count.items() if count >= min_support})
+
+    return frequent_patterns
 
 
 #Example dataset for each category
@@ -130,6 +149,12 @@ visualize_patterns_line(bottom_wear_result, 'Bottom Wear')
 visualize_patterns_line(party_wear_result, 'Party Wear')
 ```
 ### Output:
+![image](https://github.com/ShyamKumar-AI-DS/WDM_EXP3/assets/93427182/b138aaf0-c858-4324-a6d1-a091b97c65c2)
+![image](https://github.com/ShyamKumar-AI-DS/WDM_EXP3/assets/93427182/4f6d5a55-a961-4596-ae9f-63c8fd7cf118)
+![image](https://github.com/ShyamKumar-AI-DS/WDM_EXP3/assets/93427182/6af3fce6-c7a8-4f56-a0d6-9509cc75c7e3)
+![image](https://github.com/ShyamKumar-AI-DS/WDM_EXP3/assets/93427182/33280959-6eb8-4229-b39c-f3e55c83c1e8)
+
+
 
 
 ### Result:
